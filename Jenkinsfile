@@ -1,23 +1,23 @@
 pipeline {
-
     agent any
 
     stages {
 
         stage('Build') {
             steps {
-                echo "Build Docker Image"
-                bat "docker build -t mypythonflaskapp ."
+                echo 'Build Docker Image'
+
+                bat 'docker build -t mypythonflaskapp .'
             }
         }
 
         stage('Run') {
             steps {
-                echo "Run application in Docker Container"
+                echo 'Run application in Docker Container'
 
-                bat "docker rm -f mycontainer || exit /b 0"
+                bat 'docker rm -f mycontainer || exit /b 0'
 
-                bat "docker run -d -p 5000:5000 --name mycontainer mypythonflaskapp"
+                bat 'docker run -d -p 5001:5000 --name mycontainer mypythonflaskapp'
             }
         }
     }
@@ -25,6 +25,7 @@ pipeline {
     post {
         success {
             echo 'Pipeline completed successfully!'
+            echo 'Flask application is running at http://localhost:5001'
         }
 
         failure {
