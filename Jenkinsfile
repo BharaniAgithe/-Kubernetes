@@ -24,10 +24,13 @@ pipeline {
             steps {
                 withCredentials([usernamePassword(
                     credentialsId: 'dockerhub-creds',
-                    usernameVariable: 'bharaniagithe',
-                    passwordVariable: 'Bharani@2705'
+                    usernameVariable: 'DOCKER_USERNAME',
+                    passwordVariable: 'DOCKER_PASSWORD'
                 )]) {
-                    bat 'echo %DOCKER_PASSWORD%| docker login -u %DOCKER_USERNAME% --password-stdin'
+                    bat '''
+                        @echo off
+                        docker login -u "%DOCKER_USERNAME%" --password-stdin
+                    ''' 
                 }
             }
         }
@@ -59,7 +62,7 @@ pipeline {
             echo 'PIPELINE COMPLETED SUCCESSFULLY!'
         }
         failure {
-            echo 'PIPELINE FAILED! Check the Jenkins console output.'
+            echo 'PIPELINE FAILED! Check the Console Output.'
         }
     }
 }
